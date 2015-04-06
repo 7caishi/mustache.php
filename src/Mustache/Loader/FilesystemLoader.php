@@ -14,14 +14,14 @@
  *
  * A FilesystemLoader instance loads Mustache Template source from the filesystem by name:
  *
- *     $loader = new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views');
+ *     $loader = new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views');
  *     $tpl = $loader->load('foo'); // equivalent to `file_get_contents(dirname(__FILE__).'/views/foo.mustache');
  *
  * This is probably the most useful Mustache Loader implementation. It can be used for partials and normal Templates:
  *
  *     $m = new Mustache(array(
- *          'loader'          => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views'),
- *          'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
+ *          'loader'          => new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views'),
+ *          'partials_loader' => new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views/partials'),
  *     ));
  */
 namespace Mustache\Loader;
@@ -44,7 +44,7 @@ class FilesystemLoader implements Loader
      *         'extension' => '.ms',
      *     );
      *
-     * @throws Mustache_Exception_RuntimeException if $baseDir does not exist.
+     * @throws \Mustache\Exception\RuntimeException if $baseDir does not exist.
      *
      * @param string $baseDir Base directory containing Mustache template files.
      * @param array  $options Array of Loader options (default: array())
@@ -73,7 +73,7 @@ class FilesystemLoader implements Loader
     /**
      * Load a Template by name.
      *
-     *     $loader = new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views');
+     *     $loader = new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views');
      *     $loader->load('admin/dashboard'); // loads "./views/admin/dashboard.mustache";
      *
      * @param string $name
@@ -92,7 +92,7 @@ class FilesystemLoader implements Loader
     /**
      * Helper function for loading a Mustache file by name.
      *
-     * @throws Mustache_Exception_UnknownTemplateException If a template file is not found.
+     * @throws \Mustache\Exception\UnknownTemplateException If a template file is not found.
      *
      * @param string $name
      *

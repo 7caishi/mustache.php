@@ -15,7 +15,7 @@
  * With the InlineLoader, templates can be defined at the end of any PHP source
  * file:
  *
- *     $loader  = new Mustache_Loader_InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__);
+ *     $loader  = new \Mustache\Loader\InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__);
  *     $hello   = $loader->load('hello');
  *     $goodbye = $loader->load('goodbye');
  *
@@ -32,7 +32,7 @@
  * The InlineLoader is well-suited to micro-frameworks such as Silex:
  *
  *     $app->register(new MustacheServiceProvider, array(
- *         'mustache.loader' => new Mustache_Loader_InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__)
+ *         'mustache.loader' => new \Mustache\Loader\InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__)
  *     ));
  *
  *     $app->get('/{name}', function ($name) use ($app) {
@@ -63,7 +63,7 @@ class InlineLoader implements Loader
      * The magic constants `__FILE__` and `__COMPILER_HALT_OFFSET__` are usually
      * perfectly suited to the job:
      *
-     *     $loader = new Mustache_Loader_InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__);
+     *     $loader = new \Mustache\Loader\InlineLoader(__FILE__, __COMPILER_HALT_OFFSET__);
      *
      * Note that this only works if the loader is instantiated inside the same
      * file as the inline templates. If the templates are located in another
@@ -91,7 +91,7 @@ class InlineLoader implements Loader
     /**
      * Load a Template by name.
      *
-     * @throws Mustache_Exception_UnknownTemplateException If a template file is not found.
+     * @throws \Mustache\Exception\UnknownTemplateException If a template file is not found.
      *
      * @param string $name
      *

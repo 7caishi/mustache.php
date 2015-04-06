@@ -14,7 +14,7 @@
  *
  * A FilesystemCache instance caches Mustache Template classes from the filesystem by name:
  *
- *     $cache = new Mustache_Cache_FilesystemCache(dirname(__FILE__).'/cache');
+ *     $cache = new \Mustache\Cache\FilesystemCache(dirname(__FILE__).'/cache');
  *     $cache->cache($className, $compiledSource);
  *
  * The FilesystemCache benefits from any opcode caching that may be setup in your environment. So do that, k?
@@ -121,7 +121,7 @@ class FilesystemCache extends AbstractCache
     /**
      * Write cache file.
      *
-     * @throws Mustache_Exception_RuntimeException If unable to write file
+     * @throws \Mustache\Exception\RuntimeException If unable to write file
      *
      * @param string $fileName
      * @param string $value

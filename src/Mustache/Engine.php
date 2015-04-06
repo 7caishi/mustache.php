@@ -82,10 +82,10 @@ class Engine
      *         'cache_lambda_templates' => true,
      *
      *         // A Mustache template loader instance. Uses a StringLoader if not specified.
-     *         'loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views'),
+     *         'loader' => new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views'),
      *
      *         // A Mustache loader instance for partials.
-     *         'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
+     *         'partials_loader' => new \Mustache\Loader\FilesystemLoader(dirname(__FILE__).'/views/partials'),
      *
      *         // An array of Mustache partials. Useful for quick-and-dirty string template loading, but not as
      *         // efficient or lazy as a Filesystem (or database) loader.
@@ -112,7 +112,7 @@ class Engine
      *         // A Mustache Logger instance. No logging will occur unless this is set. Using a PSR-3 compatible
      *         // logging library -- such as Monolog -- is highly recommended. A simple stream logger implementation is
      *         // available as well:
-     *         'logger' => new Mustache_Logger_StreamLogger('php://stderr'),
+     *         'logger' => new \Mustache\Logger\StreamLogger('php://stderr'),
      *
      *         // Only treat Closure instances and invokable classes as callable. If true, values like
      *         // `array('ClassName', 'methodName')` and `array($classInstance, 'methodName')`, which are traditionally
@@ -123,7 +123,7 @@ class Engine
      *
      *         // Enable pragmas across all templates, regardless of the presence of pragma tags in the individual
      *         // templates.
-     *         'pragmas' => [Mustache_Engine::PRAGMA_FILTERS],
+     *         'pragmas' => [\Mustache\Engine::PRAGMA_FILTERS],
      *     );
      *
      * @throws Exception\InvalidArgumentException If `escape` option is not callable.
@@ -141,7 +141,7 @@ class Engine
 
             if (is_string($cache)) {
                 $mode = isset($options['cache_file_mode']) ? $options['cache_file_mode'] : null;
-                $cache = new Mustache_Cache_FilesystemCache($cache, $mode);
+                $cache = new \Mustache\Cache\FilesystemCache($cache, $mode);
             }
 
             $this->setCache($cache);
@@ -206,8 +206,8 @@ class Engine
      *
      * Equivalent to calling `$mustache->loadTemplate($template)->render($context);`
      *
-     * @see Mustache_Engine::loadTemplate
-     * @see Mustache_Template::render
+     * @see \Mustache\Engine::loadTemplate
+     * @see \Mustache\Template::render
      *
      * @param string $template
      * @param mixed $context (default: array())
@@ -262,7 +262,7 @@ class Engine
     /**
      * Set the Mustache template Loader instance.
      *
-     * @param Mustache_Loader $loader
+     * @param \Mustache\Loader $loader
      */
     public function setLoader(\Mustache\Loader $loader)
     {
@@ -360,7 +360,7 @@ class Engine
     /**
      * Get the current set of Mustache helpers.
      *
-     * @see Mustache_Engine::setHelpers
+     * @see \Mustache\Engine::setHelpers
      *
      * @return \Mustache\HelperCollection
      */
@@ -376,7 +376,7 @@ class Engine
     /**
      * Add a new Mustache helper.
      *
-     * @see Mustache_Engine::setHelpers
+     * @see \Mustache\Engine::setHelpers
      *
      * @param string $name
      * @param mixed $helper
@@ -389,7 +389,7 @@ class Engine
     /**
      * Get a Mustache helper by name.
      *
-     * @see Mustache_Engine::setHelpers
+     * @see \Mustache\Engine::setHelpers
      *
      * @param string $name
      *
@@ -403,7 +403,7 @@ class Engine
     /**
      * Check whether this Mustache instance has a helper.
      *
-     * @see Mustache_Engine::setHelpers
+     * @see \Mustache\Engine::setHelpers
      *
      * @param string $name
      *
@@ -417,7 +417,7 @@ class Engine
     /**
      * Remove a helper by name.
      *
-     * @see Mustache_Engine::setHelpers
+     * @see \Mustache\Engine::setHelpers
      *
      * @param string $name
      */
@@ -429,14 +429,14 @@ class Engine
     /**
      * Set the Mustache Logger instance.
      *
-     * @throws Exception\InvalidArgumentException If logger is not an instance of Mustache_Logger or Psr\Log\LoggerInterface.
+     * @throws Exception\InvalidArgumentException If logger is not an instance of Mustache\Logger or Psr\Log\LoggerInterface.
      *
-     * @param Mustache_Logger|Psr\Log\LoggerInterface $logger
+     * @param Mustache\Logger|Psr\Log\LoggerInterface $logger
      */
     public function setLogger($logger = null)
     {
         if ($logger !== null && !($logger instanceof \Mustache\Logger || is_a($logger, 'Psr\\Log\\LoggerInterface'))) {
-            throw new Exception\InvalidArgumentException('Expected an instance of Mustache_Logger or Psr\\Log\\LoggerInterface.');
+            throw new Exception\InvalidArgumentException('Expected an instance of Mustache\Logger or Psr\\Log\\LoggerInterface.');
         }
 
         if ($this->getCache()->getLogger() === null) {
@@ -449,7 +449,7 @@ class Engine
     /**
      * Get the current Mustache Logger instance.
      *
-     * @return Mustache_Logger|Psr\Log\LoggerInterface
+     * @return Mustache\Logger|Psr\Log\LoggerInterface
      */
     public function getLogger()
     {
@@ -459,7 +459,7 @@ class Engine
     /**
      * Set the Mustache Tokenizer instance.
      *
-     * @param Mustache_Tokenizer $tokenizer
+     * @param \Mustache\Tokenizer $tokenizer
      */
     public function setTokenizer(\Mustache\Tokenizer $tokenizer)
     {
@@ -569,7 +569,7 @@ class Engine
      *
      * If 'cache_lambda_templates' is enabled, this is the default cache instance. Otherwise, it is a NoopCache.
      *
-     * @see Mustache_Engine::getCache
+     * @see \Mustache\Engine::getCache
      *
      * @return \Mustache\Cache
      */
@@ -674,12 +674,12 @@ class Engine
     /**
      * Instantiate and return a Mustache Template instance by source.
      *
-     * Optionally provide a Mustache_Cache instance. This is used internally by Mustache_Engine::loadLambda to respect
+     * Optionally provide a \Mustache\Cache instance. This is used internally by \Mustache\Engine::loadLambda to respect
      * the 'cache_lambda_templates' configuration option.
      *
-     * @see Mustache_Engine::loadTemplate
-     * @see Mustache_Engine::loadPartial
-     * @see Mustache_Engine::loadLambda
+     * @see \Mustache\Engine::loadTemplate
+     * @see \Mustache\Engine::loadPartial
+     * @see \Mustache\Engine::loadLambda
      *
      * @param string $source
      * @param \Mustache\Cache $cache (default: null)
@@ -717,7 +717,7 @@ class Engine
     /**
      * Helper method to tokenize a Mustache template.
      *
-     * @see Mustache_Tokenizer::scan
+     * @see \Mustache\Tokenizer::scan
      *
      * @param string $source
      *
@@ -731,7 +731,7 @@ class Engine
     /**
      * Helper method to parse a Mustache template.
      *
-     * @see Mustache_Parser::parse
+     * @see \Mustache\Parser::parse
      *
      * @param string $source
      *
@@ -748,7 +748,7 @@ class Engine
     /**
      * Helper method to compile a Mustache template.
      *
-     * @see Mustache_Compiler::compile
+     * @see \Mustache\Compiler::compile
      *
      * @param string $source
      *
@@ -760,7 +760,7 @@ class Engine
         $name = $this->getTemplateClassName($source);
 
         $this->log(
-            Mustache_Logger::INFO,
+            \Mustache\Logger::INFO,
             'Compiling template to "{className}" class',
             array('className' => $name)
         );

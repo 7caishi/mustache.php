@@ -62,7 +62,7 @@ class Compiler
      * Enable pragmas across all templates, regardless of the presence of pragma
      * tags in the individual templates.
      *
-     * @internal Users should set global pragmas in Mustache_Engine, not here :)
+     * @internal Users should set global pragmas in \Mustache\Engine, not here :)
      *
      * @param string[] $pragmas
      */
@@ -186,13 +186,13 @@ class Compiler
 
     const KLASS = '<?php
 
-        class %s extends Mustache_Template
+        class %s extends \Mustache\Template
         {
             private $lambdaHelper;%s
 
-            public function renderInternal(Mustache_Context $context, $indent = \'\')
+            public function renderInternal(\Mustache\Context $context, $indent = \'\')
             {
-                $this->lambdaHelper = new Mustache_LambdaHelper($this->mustache, $context);
+                $this->lambdaHelper = new \Mustache\LambdaHelper($this->mustache, $context);
                 $buffer = \'\';
                 $newContext = array();
         %s
@@ -204,9 +204,9 @@ class Compiler
 
     const KLASS_NO_LAMBDAS = '<?php
 
-        class %s extends Mustache_Template
+        class %s extends \Mustache\Template
         {%s
-            public function renderInternal(Mustache_Context $context, $indent = \'\')
+            public function renderInternal(\Mustache\Context $context, $indent = \'\')
             {
                 $buffer = \'\';
                 $newContext = array();
@@ -300,7 +300,7 @@ class Compiler
     ';
 
     const SECTION = '
-        private function section%s(Mustache_Context $context, $indent, $value)
+        private function section%s(\Mustache\Context $context, $indent, $value)
         {
             $buffer = \'\';
             if (%s) {
@@ -592,9 +592,9 @@ class Compiler
      *
      * The return value will be one of `find`, `findDot` or `last`.
      *
-     * @see Mustache_Context::find
-     * @see Mustache_Context::findDot
-     * @see Mustache_Context::last
+     * @see \Mustache\Context::find
+     * @see \Mustache\Context::findDot
+     * @see \Mustache\Context::last
      *
      * @param string $id Variable name
      *

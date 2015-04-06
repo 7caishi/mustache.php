@@ -40,7 +40,7 @@ abstract class Template
     /**
      * Mustache Template instances can be treated as a function and rendered by simply calling them.
      *
-     *     $m = new Mustache_Engine;
+     *     $m = new \Mustache\Engine;
      *     $tpl = $m->loadTemplate('Hello, {{ name }}!');
      *     echo $tpl(array('name' => 'World')); // "Hello, World!"
      *
@@ -140,7 +140,7 @@ abstract class Template
      *
      * @param mixed $context Optional first context frame (default: null)
      *
-     * @return Mustache_Context
+     * @return \Mustache\Context
      */
     protected function prepareContextStack($context = null)
     {

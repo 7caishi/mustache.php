@@ -43,7 +43,7 @@ abstract class AbstractCache implements Cache
     public function setLogger($logger = null)
     {
         if ($logger !== null && !($logger instanceof Logger || is_a($logger, 'Psr\\Log\\LoggerInterface'))) {
-            throw new Exception\InvalidArgumentException('Expected an instance of Mustache_Logger or Psr\\Log\\LoggerInterface.');
+            throw new Exception\InvalidArgumentException('Expected an instance of \Mustache\Logger or Psr\\Log\\LoggerInterface.');
         }
         $this->logger = $logger;
     }

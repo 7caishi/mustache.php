@@ -47,7 +47,7 @@ class HelperCollection
     /**
      * Magic mutator.
      *
-     * @see Mustache_HelperCollection::add
+     * @see \Mustache\HelperCollection::add
      *
      * @param string $name
      * @param mixed $helper
@@ -71,7 +71,7 @@ class HelperCollection
     /**
      * Magic accessor.
      *
-     * @see Mustache_HelperCollection::get
+     * @see \Mustache\HelperCollection::get
      *
      * @param string $name
      *
@@ -103,7 +103,7 @@ class HelperCollection
     /**
      * Magic isset().
      *
-     * @see Mustache_HelperCollection::has
+     * @see \Mustache\HelperCollection::has
      *
      * @param string $name
      *
@@ -129,7 +129,7 @@ class HelperCollection
     /**
      * Magic unset().
      *
-     * @see Mustache_HelperCollection::remove
+     * @see \Mustache\HelperCollection::remove
      *
      * @param string $name
      */
