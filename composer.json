@@ -1,5 +1,5 @@
 {
-    "name": "mustache/mustache",
+    "name": "mustache",
     "description": "A Mustache implementation in PHP.",
     "keywords": [
         "templating",
