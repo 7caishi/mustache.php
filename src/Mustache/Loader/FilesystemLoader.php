@@ -24,7 +24,11 @@
  *          'partials_loader' => new Mustache_Loader_FilesystemLoader(dirname(__FILE__).'/views/partials'),
  *     ));
  */
-class Mustache_Loader_FilesystemLoader implements Mustache_Loader
+namespace Mustache\Loader;
+
+use Mustache\Loader;
+use Mustache\Exception;
+class FilesystemLoader implements Loader
 {
     private $baseDir;
     private $extension = '.mustache';
@@ -54,7 +58,7 @@ class Mustache_Loader_FilesystemLoader implements Mustache_Loader
         }
 
         if (!is_dir($this->baseDir)) {
-            throw new Mustache_Exception_RuntimeException(sprintf('FilesystemLoader baseDir must be a directory: %s', $baseDir));
+            throw new Exception\RuntimeException(sprintf('FilesystemLoader baseDir must be a directory: %s', $baseDir));
         }
 
         if (array_key_exists('extension', $options)) {
@@ -99,7 +103,7 @@ class Mustache_Loader_FilesystemLoader implements Mustache_Loader
         $fileName = $this->getFileName($name);
 
         if (!file_exists($fileName)) {
-            throw new Mustache_Exception_UnknownTemplateException($name);
+            throw new Exception\UnknownTemplateException($name);
         }
 
         return file_get_contents($fileName);

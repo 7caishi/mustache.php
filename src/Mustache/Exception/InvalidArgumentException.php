@@ -12,7 +12,9 @@
 /**
  * Invalid argument exception.
  */
-class Mustache_Exception_InvalidArgumentException extends InvalidArgumentException implements Mustache_Exception
+namespace Mustache\Exception;
+use Mustache\MustacheException;
+class InvalidArgumentException extends \InvalidArgumentException implements MustacheException
 {
     // This space intentionally left blank.
 }

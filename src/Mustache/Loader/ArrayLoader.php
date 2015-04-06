@@ -24,7 +24,12 @@
  * The ArrayLoader is used internally as a partials loader by Mustache_Engine instance when an array of partials
  * is set. It can also be used as a quick-and-dirty Template loader.
  */
-class Mustache_Loader_ArrayLoader implements Mustache_Loader, Mustache_Loader_MutableLoader
+namespace Mustache\Loader;
+
+use Mustache\Loader;
+use Mustache\Exception;
+
+class ArrayLoader implements Loader, MutableLoader
 {
     private $templates;
 
@@ -41,7 +46,7 @@ class Mustache_Loader_ArrayLoader implements Mustache_Loader, Mustache_Loader_Mu
     /**
      * Load a Template.
      *
-     * @throws Mustache_Exception_UnknownTemplateException If a template file is not found.
+     * @throws Exception\UnknownTemplateException If a template file is not found.
      *
      * @param string $name
      *
@@ -50,7 +55,7 @@ class Mustache_Loader_ArrayLoader implements Mustache_Loader, Mustache_Loader_Mu
     public function load($name)
     {
         if (!isset($this->templates[$name])) {
-            throw new Mustache_Exception_UnknownTemplateException($name);
+            throw new Exception\UnknownTemplateException($name);
         }
 
         return $this->templates[$name];

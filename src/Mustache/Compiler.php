@@ -14,7 +14,12 @@
  *
  * This class is responsible for turning a Mustache token parse tree into normal PHP source code.
  */
-class Mustache_Compiler
+namespace Mustache;
+
+use Mustache\Exception;
+use Mustache\Tokenizer;
+
+class Compiler
 {
     private $pragmas;
     private $defaultPragmas = array();
@@ -29,25 +34,25 @@ class Mustache_Compiler
     /**
      * Compile a Mustache token parse tree into PHP source code.
      *
-     * @param string $source          Mustache Template source code
-     * @param string $tree            Parse tree of Mustache tokens
-     * @param string $name            Mustache Template class name
-     * @param bool   $customEscape    (default: false)
-     * @param string $charset         (default: 'UTF-8')
-     * @param bool   $strictCallables (default: false)
-     * @param int    $entityFlags     (default: ENT_COMPAT)
+     * @param string $source Mustache Template source code
+     * @param string $tree Parse tree of Mustache tokens
+     * @param string $name Mustache Template class name
+     * @param bool $customEscape (default: false)
+     * @param string $charset (default: 'UTF-8')
+     * @param bool $strictCallables (default: false)
+     * @param int $entityFlags (default: ENT_COMPAT)
      *
      * @return string Generated PHP source code
      */
     public function compile($source, array $tree, $name, $customEscape = false, $charset = 'UTF-8', $strictCallables = false, $entityFlags = ENT_COMPAT)
     {
-        $this->pragmas         = $this->defaultPragmas;
-        $this->sections        = array();
-        $this->source          = $source;
-        $this->indentNextLine  = true;
-        $this->customEscape    = $customEscape;
-        $this->entityFlags     = $entityFlags;
-        $this->charset         = $charset;
+        $this->pragmas = $this->defaultPragmas;
+        $this->sections = array();
+        $this->source = $source;
+        $this->indentNextLine = true;
+        $this->customEscape = $customEscape;
+        $this->entityFlags = $entityFlags;
+        $this->charset = $charset;
         $this->strictCallables = $strictCallables;
 
         return $this->writeCode($tree, $name);
@@ -73,10 +78,10 @@ class Mustache_Compiler
     /**
      * Helper function for walking the Mustache token parse tree.
      *
-     * @throws Mustache_Exception_SyntaxException upon encountering unknown token types.
+     * @throws Exception\SyntaxException upon encountering unknown token types.
      *
-     * @param array $tree  Parse tree of Mustache tokens
-     * @param int   $level (default: 0)
+     * @param array $tree Parse tree of Mustache tokens
+     * @param int $level (default: 0)
      *
      * @return string Generated PHP source code
      */
@@ -85,94 +90,94 @@ class Mustache_Compiler
         $code = '';
         $level++;
         foreach ($tree as $node) {
-            switch ($node[Mustache_Tokenizer::TYPE]) {
-                case Mustache_Tokenizer::T_PRAGMA:
-                    $this->pragmas[$node[Mustache_Tokenizer::NAME]] = true;
+            switch ($node[Tokenizer::TYPE]) {
+                case Tokenizer::T_PRAGMA:
+                    $this->pragmas[$node[Tokenizer::NAME]] = true;
                     break;
 
-                case Mustache_Tokenizer::T_SECTION:
+                case Tokenizer::T_SECTION:
                     $code .= $this->section(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
+                        $node[Tokenizer::NODES],
+                        $node[Tokenizer::NAME],
+                        isset($node[Tokenizer::FILTERS]) ? $node[Tokenizer::FILTERS] : array(),
+                        $node[Tokenizer::INDEX],
+                        $node[Tokenizer::END],
+                        $node[Tokenizer::OTAG],
+                        $node[Tokenizer::CTAG],
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_INVERTED:
+                case Tokenizer::T_INVERTED:
                     $code .= $this->invertedSection(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
+                        $node[Tokenizer::NODES],
+                        $node[Tokenizer::NAME],
+                        isset($node[Tokenizer::FILTERS]) ? $node[Tokenizer::FILTERS] : array(),
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_PARTIAL:
+                case Tokenizer::T_PARTIAL:
                     $code .= $this->partial(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
+                        $node[Tokenizer::NAME],
+                        isset($node[Tokenizer::INDENT]) ? $node[Tokenizer::INDENT] : '',
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_PARENT:
+                case Tokenizer::T_PARENT:
                     $code .= $this->parent(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
-                        $node[Mustache_Tokenizer::NODES],
+                        $node[Tokenizer::NAME],
+                        isset($node[Tokenizer::INDENT]) ? $node[Tokenizer::INDENT] : '',
+                        $node[Tokenizer::NODES],
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_BLOCK_ARG:
+                case Tokenizer::T_BLOCK_ARG:
                     $code .= $this->blockArg(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
+                        $node[Tokenizer::NODES],
+                        $node[Tokenizer::NAME],
+                        $node[Tokenizer::INDEX],
+                        $node[Tokenizer::END],
+                        $node[Tokenizer::OTAG],
+                        $node[Tokenizer::CTAG],
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_BLOCK_VAR:
+                case Tokenizer::T_BLOCK_VAR:
                     $code .= $this->blockVar(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
+                        $node[Tokenizer::NODES],
+                        $node[Tokenizer::NAME],
+                        $node[Tokenizer::INDEX],
+                        $node[Tokenizer::END],
+                        $node[Tokenizer::OTAG],
+                        $node[Tokenizer::CTAG],
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_COMMENT:
+                case Tokenizer::T_COMMENT:
                     break;
 
-                case Mustache_Tokenizer::T_ESCAPED:
-                case Mustache_Tokenizer::T_UNESCAPED:
-                case Mustache_Tokenizer::T_UNESCAPED_2:
+                case Tokenizer::T_ESCAPED:
+                case Tokenizer::T_UNESCAPED:
+                case Tokenizer::T_UNESCAPED_2:
                     $code .= $this->variable(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
-                        $node[Mustache_Tokenizer::TYPE] === Mustache_Tokenizer::T_ESCAPED,
+                        $node[Tokenizer::NAME],
+                        isset($node[Tokenizer::FILTERS]) ? $node[Tokenizer::FILTERS] : array(),
+                        $node[Tokenizer::TYPE] === Tokenizer::T_ESCAPED,
                         $level
                     );
                     break;
 
-                case Mustache_Tokenizer::T_TEXT:
-                    $code .= $this->text($node[Mustache_Tokenizer::VALUE], $level);
+                case Tokenizer::T_TEXT:
+                    $code .= $this->text($node[Tokenizer::VALUE], $level);
                     break;
 
                 default:
-                    throw new Mustache_Exception_SyntaxException(sprintf('Unknown token type: %s', $node[Mustache_Tokenizer::TYPE]), $node);
+                    throw new Exception\SyntaxException(sprintf('Unknown token type: %s', $node[Tokenizer::TYPE]), $node);
             }
         }
 
@@ -216,16 +221,16 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template class PHP source.
      *
-     * @param array  $tree Parse tree of Mustache tokens
+     * @param array $tree Parse tree of Mustache tokens
      * @param string $name Mustache Template class name
      *
      * @return string Generated PHP source code
      */
     private function writeCode($tree, $name)
     {
-        $code     = $this->walk($tree);
+        $code = $this->walk($tree);
         $sections = implode("\n", $this->sections);
-        $klass    = empty($this->sections) ? self::KLASS_NO_LAMBDAS : self::KLASS;
+        $klass = empty($this->sections) ? self::KLASS_NO_LAMBDAS : self::KLASS;
 
         $callable = $this->strictCallables ? $this->prepare(self::STRICT_CALLABLE) : '';
 
@@ -244,13 +249,13 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template inheritance block variable PHP source.
      *
-     * @param array  $nodes Array of child tokens
-     * @param string $id    Section name
-     * @param int    $start Section start offset
-     * @param int    $end   Section end offset
-     * @param string $otag  Current Mustache opening tag
-     * @param string $ctag  Current Mustache closing tag
-     * @param int    $level
+     * @param array $nodes Array of child tokens
+     * @param string $id Section name
+     * @param int $start Section start offset
+     * @param int $end Section end offset
+     * @param string $otag Current Mustache opening tag
+     * @param string $ctag Current Mustache closing tag
+     * @param int $level
      *
      * @return string Generated PHP source code
      */
@@ -270,20 +275,20 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template inheritance block argument PHP source.
      *
-     * @param array  $nodes Array of child tokens
-     * @param string $id    Section name
-     * @param int    $start Section start offset
-     * @param int    $end   Section end offset
-     * @param string $otag  Current Mustache opening tag
-     * @param string $ctag  Current Mustache closing tag
-     * @param int    $level
+     * @param array $nodes Array of child tokens
+     * @param string $id Section name
+     * @param int $start Section start offset
+     * @param int $end Section end offset
+     * @param string $otag Current Mustache opening tag
+     * @param string $ctag Current Mustache closing tag
+     * @param int $level
      *
      * @return string Generated PHP source code
      */
     private function blockArg($nodes, $id, $start, $end, $otag, $ctag, $level)
     {
         $key = $this->section($nodes, $id, array(), $start, $end, $otag, $ctag, $level, true);
-        $id  = var_export($id, true);
+        $id = var_export($id, true);
 
         return sprintf($this->prepare(self::BLOCK_ARG, $level), $id, $key, $id, $this->flushIndent());
     }
@@ -323,21 +328,21 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template section PHP source.
      *
-     * @param array    $nodes   Array of child tokens
-     * @param string   $id      Section name
+     * @param array $nodes Array of child tokens
+     * @param string $id Section name
      * @param string[] $filters Array of filters
-     * @param int      $start   Section start offset
-     * @param int      $end     Section end offset
-     * @param string   $otag    Current Mustache opening tag
-     * @param string   $ctag    Current Mustache closing tag
-     * @param int      $level
-     * @param bool     $arg     (default: false)
+     * @param int $start Section start offset
+     * @param int $end Section end offset
+     * @param string $otag Current Mustache opening tag
+     * @param string $ctag Current Mustache closing tag
+     * @param int $level
+     * @param bool $arg (default: false)
      *
      * @return string Generated section PHP source code
      */
     private function section($nodes, $id, $filters, $start, $end, $otag, $ctag, $level, $arg = false)
     {
-        $source   = var_export(substr($this->source, $start, $end - $start), true);
+        $source = var_export(substr($this->source, $start, $end - $start), true);
         $callable = $this->getCallable();
 
         if ($otag !== '{{' || $ctag !== '}}') {
@@ -355,8 +360,8 @@ class Mustache_Compiler
         if ($arg === true) {
             return $key;
         } else {
-            $method  = $this->getFindMethod($id);
-            $id      = var_export($id, true);
+            $method = $this->getFindMethod($id);
+            $id = var_export($id, true);
             $filters = $this->getFilters($filters, $level);
 
             return sprintf($this->prepare(self::SECTION_CALL, $level), $id, $method, $id, $filters, $key);
@@ -373,17 +378,17 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template inverted section PHP source.
      *
-     * @param array    $nodes   Array of child tokens
-     * @param string   $id      Section name
+     * @param array $nodes Array of child tokens
+     * @param string $id Section name
      * @param string[] $filters Array of filters
-     * @param int      $level
+     * @param int $level
      *
      * @return string Generated inverted section PHP source code
      */
     private function invertedSection($nodes, $id, $filters, $level)
     {
-        $method  = $this->getFindMethod($id);
-        $id      = var_export($id, true);
+        $method = $this->getFindMethod($id);
+        $id = var_export($id, true);
         $filters = $this->getFilters($filters, $level);
 
         return sprintf($this->prepare(self::INVERTED_SECTION, $level), $id, $method, $id, $filters, $this->walk($nodes, $level));
@@ -399,9 +404,9 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template partial call PHP source.
      *
-     * @param string $id     Partial name
+     * @param string $id Partial name
      * @param string $indent Whitespace indent to apply to partial
-     * @param int    $level
+     * @param int $level
      *
      * @return string Generated partial call PHP source code
      */
@@ -433,10 +438,10 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template inheritance parent call PHP source.
      *
-     * @param string $id       Parent tag name
-     * @param string $indent   Whitespace indent to apply to parent
-     * @param array  $children Child nodes
-     * @param int    $level
+     * @param string $id Parent tag name
+     * @param string $indent Whitespace indent to apply to parent
+     * @param array $children Child nodes
+     * @param int $level
      *
      * @return string Generated PHP source code
      */
@@ -461,7 +466,7 @@ class Mustache_Compiler
      */
     private static function onlyBlockArgs(array $node)
     {
-        return $node[Mustache_Tokenizer::TYPE] === Mustache_Tokenizer::T_BLOCK_ARG;
+        return $node[Tokenizer::TYPE] === Tokenizer::T_BLOCK_ARG;
     }
 
     const VARIABLE = '
@@ -472,19 +477,19 @@ class Mustache_Compiler
     /**
      * Generate Mustache Template variable interpolation PHP source.
      *
-     * @param string   $id      Variable name
+     * @param string $id Variable name
      * @param string[] $filters Array of filters
-     * @param bool     $escape  Escape the variable value for output?
-     * @param int      $level
+     * @param bool $escape Escape the variable value for output?
+     * @param int $level
      *
      * @return string Generated variable interpolation PHP source
      */
     private function variable($id, $filters, $escape, $level)
     {
-        $method  = $this->getFindMethod($id);
-        $id      = ($method !== 'last') ? var_export($id, true) : '';
+        $method = $this->getFindMethod($id);
+        $id = ($method !== 'last') ? var_export($id, true) : '';
         $filters = $this->getFilters($filters, $level);
-        $value   = $escape ? $this->getEscape() : '$value';
+        $value = $escape ? $this->getEscape() : '$value';
 
         return sprintf($this->prepare(self::VARIABLE, $level), $method, $id, $filters, $this->flushIndent(), $value);
     }
@@ -492,7 +497,7 @@ class Mustache_Compiler
     const FILTER = '
         $filter = $context->%s(%s);
         if (!(%s)) {
-            throw new Mustache_Exception_UnknownFilterException(%s);
+            throw new \Mustache\Exception\UnknownFilterException(%s);
         }
         $value = call_user_func($filter, $value);%s
     ';
@@ -501,7 +506,7 @@ class Mustache_Compiler
      * Generate Mustache Template variable filtering PHP source.
      *
      * @param string[] $filters Array of filters
-     * @param int      $level
+     * @param int $level
      *
      * @return string Generated filter PHP source
      */
@@ -511,11 +516,11 @@ class Mustache_Compiler
             return '';
         }
 
-        $name     = array_shift($filters);
-        $method   = $this->getFindMethod($name);
-        $filter   = ($method !== 'last') ? var_export($name, true) : '';
+        $name = array_shift($filters);
+        $method = $this->getFindMethod($name);
+        $filter = ($method !== 'last') ? var_export($name, true) : '';
         $callable = $this->getCallable('$filter');
-        $msg      = var_export($name, true);
+        $msg = var_export($name, true);
 
         return sprintf($this->prepare(self::FILTER, $level), $method, $filter, $callable, $msg, $this->getFilters($filters, $level));
     }
@@ -527,7 +532,7 @@ class Mustache_Compiler
      * Generate Mustache Template output Buffer call PHP source.
      *
      * @param string $text
-     * @param int    $level
+     * @param int $level
      *
      * @return string Generated output Buffer call PHP source
      */
@@ -544,9 +549,9 @@ class Mustache_Compiler
      * Prepare PHP source code snippet for output.
      *
      * @param string $text
-     * @param int    $bonus          Additional indent level (default: 0)
-     * @param bool   $prependNewline Prepend a newline to the snippet? (default: true)
-     * @param bool   $appendNewline  Append a newline to the snippet? (default: false)
+     * @param int $bonus Additional indent level (default: 0)
+     * @param bool $prependNewline Prepend a newline to the snippet? (default: true)
+     * @param bool $appendNewline Append a newline to the snippet? (default: false)
      *
      * @return string PHP source code snippet
      */
@@ -564,7 +569,7 @@ class Mustache_Compiler
     }
 
     const DEFAULT_ESCAPE = 'htmlspecialchars(%s, %s, %s)';
-    const CUSTOM_ESCAPE  = 'call_user_func($this->mustache->getEscape(), %s)';
+    const CUSTOM_ESCAPE = 'call_user_func($this->mustache->getEscape(), %s)';
 
     /**
      * Get the current escaper.
@@ -608,7 +613,7 @@ class Mustache_Compiler
         return 'findDot';
     }
 
-    const IS_CALLABLE        = '!is_string(%s) && is_callable(%s)';
+    const IS_CALLABLE = '!is_string(%s) && is_callable(%s)';
     const STRICT_IS_CALLABLE = 'is_object(%s) && is_callable(%s)';
 
     /**

@@ -12,7 +12,8 @@
 /**
  * Mustache Template mutable Loader interface.
  */
-interface Mustache_Loader_MutableLoader
+namespace Mustache\Loader;
+interface MutableLoader
 {
     /**
      * Set an associative array of Template sources for this loader.

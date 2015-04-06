@@ -15,7 +15,9 @@
  * The in-memory cache is used for uncached lambda section templates. It's also useful during development, but is not
  * recommended for production use.
  */
-class Mustache_Cache_NoopCache extends Mustache_Cache_AbstractCache
+namespace Mustache\Cache;
+use Mustache\Logger;
+class NoopCache extends AbstractCache
 {
     /**
      * Loads nothing. Move along.
@@ -38,7 +40,7 @@ class Mustache_Cache_NoopCache extends Mustache_Cache_AbstractCache
     public function cache($key, $value)
     {
         $this->log(
-            Mustache_Logger::WARNING,
+            Logger::WARNING,
             'Template cache disabled, evaluating "{className}" class at runtime',
             array('className' => $key)
         );

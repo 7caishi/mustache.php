@@ -12,7 +12,9 @@
 /**
  * Logic exception.
  */
-class Mustache_Exception_LogicException extends LogicException implements Mustache_Exception
+namespace Mustache\Exception;
+use Mustache\MustacheException;
+class LogicException extends \LogicException implements MustacheException
 {
     // This space intentionally left blank.
 }

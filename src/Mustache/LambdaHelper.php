@@ -16,7 +16,8 @@
  * giving them access to a `render` method for rendering a string with the
  * current context.
  */
-class Mustache_LambdaHelper
+namespace Mustache;
+class LambdaHelper
 {
     private $mustache;
     private $context;
@@ -24,10 +25,10 @@ class Mustache_LambdaHelper
     /**
      * Mustache Lambda Helper constructor.
      *
-     * @param Mustache_Engine  $mustache Mustache engine instance.
-     * @param Mustache_Context $context  Rendering context.
+     * @param \Mustache\Engine  $mustache Mustache engine instance.
+     * @param \Mustache\Context $context  Rendering context.
      */
-    public function __construct(Mustache_Engine $mustache, Mustache_Context $context)
+    public function __construct(\Mustache\Engine $mustache, \Mustache\Context $context)
     {
         $this->mustache = $mustache;
         $this->context  = $context;

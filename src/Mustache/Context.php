@@ -12,7 +12,8 @@
 /**
  * Mustache Template rendering Context.
  */
-class Mustache_Context
+namespace Mustache;
+class Context
 {
     private $stack      = array();
     private $blockStack = array();

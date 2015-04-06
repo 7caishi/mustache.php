@@ -12,12 +12,13 @@
 /**
  * Mustache Template Loader interface.
  */
-interface Mustache_Loader
+namespace Mustache;
+interface Loader
 {
     /**
      * Load a Template by name.
      *
-     * @throws Mustache_Exception_UnknownTemplateException If a template file is not found.
+     * @throws \Mustache\Exception\UnknownTemplateException If a template file is not found.
      *
      * @param string $name
      *

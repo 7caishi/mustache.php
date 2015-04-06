@@ -47,7 +47,11 @@
  *     @@ hello
  *     Hello, {{ name }}!
  */
-class Mustache_Loader_InlineLoader implements Mustache_Loader
+namespace Mustache\Loader;
+
+use Mustache\Loader;
+use Mustache\Exception;
+class InlineLoader implements Loader
 {
     protected $fileName;
     protected $offset;
@@ -73,11 +77,11 @@ class Mustache_Loader_InlineLoader implements Mustache_Loader
     public function __construct($fileName, $offset)
     {
         if (!is_file($fileName)) {
-            throw new Mustache_Exception_InvalidArgumentException('InlineLoader expects a valid filename.');
+            throw new Exception\InvalidArgumentException('InlineLoader expects a valid filename.');
         }
 
         if (!is_int($offset) || $offset < 0) {
-            throw new Mustache_Exception_InvalidArgumentException('InlineLoader expects a valid file offset.');
+            throw new Exception\InvalidArgumentException('InlineLoader expects a valid file offset.');
         }
 
         $this->fileName = $fileName;
@@ -98,7 +102,7 @@ class Mustache_Loader_InlineLoader implements Mustache_Loader
         $this->loadTemplates();
 
         if (!array_key_exists($name, $this->templates)) {
-            throw new Mustache_Exception_UnknownTemplateException($name);
+            throw new Exception\UnknownTemplateException($name);
         }
 
         return $this->templates[$name];

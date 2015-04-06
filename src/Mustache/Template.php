@@ -14,10 +14,11 @@
  *
  * @abstract
  */
-abstract class Mustache_Template
+namespace Mustache;
+abstract class Template
 {
     /**
-     * @var Mustache_Engine
+     * @var \Mustache\Engine
      */
     protected $mustache;
 
@@ -29,9 +30,9 @@ abstract class Mustache_Template
     /**
      * Mustache Template constructor.
      *
-     * @param Mustache_Engine $mustache
+     * @param \Mustache\Engine $mustache
      */
-    public function __construct(Mustache_Engine $mustache)
+    public function __construct(\Mustache\Engine $mustache)
     {
         $this->mustache = $mustache;
     }
@@ -43,7 +44,7 @@ abstract class Mustache_Template
      *     $tpl = $m->loadTemplate('Hello, {{ name }}!');
      *     echo $tpl(array('name' => 'World')); // "Hello, World!"
      *
-     * @see Mustache_Template::render
+     * @see \Mustache\Template::render
      *
      * @param mixed $context Array or object rendering context (default: array())
      *
@@ -75,12 +76,12 @@ abstract class Mustache_Template
      *
      * NOTE: This method is not part of the Mustache.php public API.
      *
-     * @param Mustache_Context $context
+     * @param \Mustache\Context $context
      * @param string           $indent  (default: '')
      *
      * @return string Rendered template
      */
-    abstract public function renderInternal(Mustache_Context $context, $indent = '');
+    abstract public function renderInternal(\Mustache\Context $context, $indent = '');
 
     /**
      * Tests whether a value should be iterated over (e.g. in a section context).
@@ -143,7 +144,7 @@ abstract class Mustache_Template
      */
     protected function prepareContextStack($context = null)
     {
-        $stack = new Mustache_Context();
+        $stack = new \Mustache\Context();
 
         $helpers = $this->mustache->getHelpers();
         if (!$helpers->isEmpty()) {
@@ -163,12 +164,12 @@ abstract class Mustache_Template
      * Invoke the value if it is callable, otherwise return the value.
      *
      * @param mixed            $value
-     * @param Mustache_Context $context
+     * @param \Mustache\Context $context
      * @param string           $indent
      *
      * @return string
      */
-    protected function resolveValue($value, Mustache_Context $context, $indent = '')
+    protected function resolveValue($value, \Mustache\Context $context, $indent = '')
     {
         if (($this->strictCallables ? is_object($value) : !is_string($value)) && is_callable($value)) {
             return $this->mustache

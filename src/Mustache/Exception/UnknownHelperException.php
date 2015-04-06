@@ -12,7 +12,9 @@
 /**
  * Unknown helper exception.
  */
-class Mustache_Exception_UnknownHelperException extends InvalidArgumentException implements Mustache_Exception
+namespace Mustache\Exception;
+use Mustache\MustacheException;
+class UnknownHelperException extends \InvalidArgumentException implements MustacheException
 {
     protected $helperName;
 

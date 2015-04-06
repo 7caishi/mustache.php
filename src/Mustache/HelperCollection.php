@@ -12,7 +12,11 @@
 /**
  * A collection of helpers for a Mustache instance.
  */
-class Mustache_HelperCollection
+namespace Mustache;
+
+use  Mustache\Exception;
+
+class HelperCollection
 {
     private $helpers = array();
 
@@ -21,7 +25,7 @@ class Mustache_HelperCollection
      *
      * Optionally accepts an array (or Traversable) of `$name => $helper` pairs.
      *
-     * @throws Mustache_Exception_InvalidArgumentException if the $helpers argument isn't an array or Traversable
+     * @throws Exception\InvalidArgumentException if the $helpers argument isn't an array or Traversable
      *
      * @param array|Traversable $helpers (default: null)
      */
@@ -32,7 +36,7 @@ class Mustache_HelperCollection
         }
 
         if (!is_array($helpers) && !$helpers instanceof Traversable) {
-            throw new Mustache_Exception_InvalidArgumentException('HelperCollection constructor expects an array of helpers');
+            throw new Exception\InvalidArgumentException('HelperCollection constructor expects an array of helpers');
         }
 
         foreach ($helpers as $name => $helper) {
@@ -46,7 +50,7 @@ class Mustache_HelperCollection
      * @see Mustache_HelperCollection::add
      *
      * @param string $name
-     * @param mixed  $helper
+     * @param mixed $helper
      */
     public function __set($name, $helper)
     {
@@ -57,7 +61,7 @@ class Mustache_HelperCollection
      * Add a helper to this collection.
      *
      * @param string $name
-     * @param mixed  $helper
+     * @param mixed $helper
      */
     public function add($name, $helper)
     {
@@ -81,7 +85,7 @@ class Mustache_HelperCollection
     /**
      * Get a helper by name.
      *
-     * @throws Mustache_Exception_UnknownHelperException If helper does not exist.
+     * @throws Exception\UnknownHelperException If helper does not exist.
      *
      * @param string $name
      *
@@ -90,7 +94,7 @@ class Mustache_HelperCollection
     public function get($name)
     {
         if (!$this->has($name)) {
-            throw new Mustache_Exception_UnknownHelperException($name);
+            throw new Exception\UnknownHelperException($name);
         }
 
         return $this->helpers[$name];
@@ -137,14 +141,14 @@ class Mustache_HelperCollection
     /**
      * Check whether a given helper is present in the collection.
      *
-     * @throws Mustache_Exception_UnknownHelperException if the requested helper is not present.
+     * @throws Exception\UnknownHelperException if the requested helper is not present.
      *
      * @param string $name
      */
     public function remove($name)
     {
         if (!$this->has($name)) {
-            throw new Mustache_Exception_UnknownHelperException($name);
+            throw new Exception\UnknownHelperException($name);
         }
 
         unset($this->helpers[$name]);

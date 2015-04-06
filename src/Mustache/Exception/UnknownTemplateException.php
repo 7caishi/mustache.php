@@ -12,7 +12,9 @@
 /**
  * Unknown template exception.
  */
-class Mustache_Exception_UnknownTemplateException extends InvalidArgumentException implements Mustache_Exception
+namespace Mustache\Exception;
+use Mustache\MustacheException;
+class UnknownTemplateException extends \InvalidArgumentException implements MustacheException
 {
     protected $templateName;
 

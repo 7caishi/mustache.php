@@ -26,25 +26,26 @@
  * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
  * for the full interface specification.
  */
-interface Mustache_Logger
+namespace Mustache;
+interface Logger
 {
     /**
      * Psr\Log compatible log levels.
      */
     const EMERGENCY = 'emergency';
-    const ALERT     = 'alert';
-    const CRITICAL  = 'critical';
-    const ERROR     = 'error';
-    const WARNING   = 'warning';
-    const NOTICE    = 'notice';
-    const INFO      = 'info';
-    const DEBUG     = 'debug';
+    const ALERT = 'alert';
+    const CRITICAL = 'critical';
+    const ERROR = 'error';
+    const WARNING = 'warning';
+    const NOTICE = 'notice';
+    const INFO = 'info';
+    const DEBUG = 'debug';
 
     /**
      * System is unusable.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function emergency($message, array $context = array());
 
@@ -55,7 +56,7 @@ interface Mustache_Logger
      * trigger the SMS alerts and wake you up.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function alert($message, array $context = array());
 
@@ -65,7 +66,7 @@ interface Mustache_Logger
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function critical($message, array $context = array());
 
@@ -74,7 +75,7 @@ interface Mustache_Logger
      * be logged and monitored.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function error($message, array $context = array());
 
@@ -85,7 +86,7 @@ interface Mustache_Logger
      * that are not necessarily wrong.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function warning($message, array $context = array());
 
@@ -93,7 +94,7 @@ interface Mustache_Logger
      * Normal but significant events.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function notice($message, array $context = array());
 
@@ -103,7 +104,7 @@ interface Mustache_Logger
      * Example: User logs in, SQL logs.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function info($message, array $context = array());
 
@@ -111,16 +112,16 @@ interface Mustache_Logger
      * Detailed debug information.
      *
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function debug($message, array $context = array());
 
     /**
      * Logs with an arbitrary level.
      *
-     * @param mixed  $level
+     * @param mixed $level
      * @param string $message
-     * @param array  $context
+     * @param array $context
      */
     public function log($level, $message, array $context = array());
 }

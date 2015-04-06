@@ -12,7 +12,9 @@
 /**
  * Unknown filter exception.
  */
-class Mustache_Exception_UnknownFilterException extends UnexpectedValueException implements Mustache_Exception
+namespace Mustache\Exception;
+use Mustache\MustacheException;
+class UnknownFilterException extends \UnexpectedValueException implements MustacheException
 {
     protected $filterName;
 
