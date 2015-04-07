@@ -28,7 +28,7 @@ abstract class AbstractCache implements Cache
 
     /**
      * Get the current logger instance.
-     * @return Mustache\Logger
+     * @return \Mustache\Logger
      */
     public function getLogger()
     {
@@ -38,7 +38,7 @@ abstract class AbstractCache implements Cache
     /**
      * Set a logger instance.
      *
-     * @return Mustache\Logger
+     * @return \Mustache\Logger
      */
     public function setLogger($logger = null)
     {

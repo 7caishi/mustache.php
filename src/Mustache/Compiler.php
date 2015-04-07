@@ -17,7 +17,6 @@
 namespace Mustache;
 
 use Mustache\Exception;
-use Mustache\Tokenizer;
 
 class Compiler
 {
