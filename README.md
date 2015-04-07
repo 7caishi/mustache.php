@@ -1,4 +1,4 @@
-Mustache.php
+Mustache.php (namespace version)
 ============
 
 A [Mustache](http://mustache.github.com/) implementation in PHP.
