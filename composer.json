@@ -23,6 +23,6 @@
         "fabpot/php-cs-fixer": "~1.6"
     },
     "autoload": {
-        "psr-4": {"Mustache\\": "src/"}
+        "psr-4": {"Mustache\\": "src/Mustache"}
     }
 }
